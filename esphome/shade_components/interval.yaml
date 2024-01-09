@@ -1,0 +1,8 @@
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          if(id(is_running) && (millis() - id(last_encoder_update)) > id(error_delay).state) {
+              ESP_LOGD("custom", "Motor stalled or encoder not updating. Stopping the motor.");
+              id(shade).make_call().set_command_stop().perform();
+          }

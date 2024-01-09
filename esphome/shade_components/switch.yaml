@@ -1,0 +1,14 @@
+switch:
+  - platform: template
+    name: "Override Encoder"
+    id: override_encoder_switch
+    turn_on_action:
+      - globals.set:
+          id: override_encoder
+          value: "true"
+      - logger.log: "Encoder will be ignored"
+    turn_off_action:
+      - globals.set:
+          id: override_encoder
+          value: "false"
+      - logger.log: "Encoder will count normally"

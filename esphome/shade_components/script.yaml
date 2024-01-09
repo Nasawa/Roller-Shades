@@ -1,0 +1,53 @@
+script:
+  - id: motor_up
+    then:
+      - globals.set:
+          id: is_running
+          value: "true"
+      - lambda: |-
+          id(last_encoder_update) = millis();
+      - output.turn_off: motor_direction_down
+      - output.turn_on: motor_enable
+      - output.turn_on: motor_direction_up
+      - wait_until:
+          lambda: >-
+            if (id(override_encoder)) {
+              return !id(is_running);  // If override_encoder is true, wait until is_running is false
+            } else {
+              // Otherwise, wait until it hits the target or is_running is false
+              return id(current_encoder_percent).state >= (id(target_position) - id(motor_offset)) || !id(is_running);
+            }
+      - script.execute: motor_stop
+
+  - id: motor_down
+    then:
+      - globals.set:
+          id: is_running
+          value: "true"
+      - lambda: |-
+          id(last_encoder_update) = millis();
+      - output.turn_off: motor_direction_up
+      - output.turn_on: motor_enable
+      - output.turn_on: motor_direction_down
+      - wait_until:
+          lambda: >-
+            if (id(override_encoder)) {
+              return !id(is_running);  // If override_encoder is true, wait until is_running is false
+            } else {
+              // Otherwise, wait until it hits the target or is_running is false
+              return id(current_encoder_percent).state <= (id(target_position) + id(motor_offset)) || !id(is_running);
+            }
+      - script.execute: motor_stop
+
+  - id: motor_stop
+    then:
+      - output.turn_off: motor_direction_up
+      - output.turn_off: motor_direction_down
+      - output.turn_off: motor_enable
+      - logger.log: "Stopping motor"
+      - globals.set:
+          id: target_position
+          value: !lambda return id(current_encoder_percent).state;
+      - globals.set:
+          id: is_running
+          value: "false"

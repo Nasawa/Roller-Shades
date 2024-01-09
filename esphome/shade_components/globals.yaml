@@ -1,0 +1,17 @@
+globals:
+  - id: motor_offset
+    type: int
+    initial_value: "0"
+  - id: target_position
+    type: int
+    initial_value: "0"
+  - id: is_running
+    type: bool
+    initial_value: "false"
+  - id: override_encoder
+    type: bool
+    initial_value: "false"
+  - id: last_encoder_update
+    type: uint32_t
+    restore_value: no
+    initial_value: "0"

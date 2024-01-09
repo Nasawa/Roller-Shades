@@ -1,0 +1,13 @@
+# Define the motor control pins
+output:
+  - platform: gpio
+    id: motor_enable
+    pin: D8
+
+  - platform: gpio
+    id: motor_direction_up
+    pin: D4
+
+  - platform: gpio
+    id: motor_direction_down
+    pin: D5

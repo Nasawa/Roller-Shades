@@ -1,0 +1,56 @@
+number:
+  - platform: template
+    id: max_encoder_value
+    name: "Max Encoder Value"
+    step: 1
+    mode: BOX
+    min_value: 0
+    max_value: 1000
+    initial_value: 260
+    restore_value: true
+    optimistic: true
+    on_value:
+      then:
+        - number.set:
+            id: current_encoder_percent
+            value: !lambda |-
+              int position = (id(blinds_encoder).state - id(min_encoder_value).state) * 100 / (id(max_encoder_value).state - id(min_encoder_value).state);
+              return position;
+
+  - platform: template
+    id: min_encoder_value
+    name: "Min Encoder Value"
+    step: 1
+    mode: BOX
+    min_value: 0
+    max_value: 1000
+    initial_value: 0
+    restore_value: true
+    optimistic: true
+    on_value:
+      then:
+        - number.set:
+            id: current_encoder_percent
+            value: !lambda |-
+              int position = (id(blinds_encoder).state - id(min_encoder_value).state) * 100 / (id(max_encoder_value).state - id(min_encoder_value).state);
+              return position;
+
+  - platform: template
+    id: current_encoder_percent
+    name: "Current Encoder Percent"
+    step: 1
+    min_value: 0
+    max_value: 100
+    restore_value: true
+    initial_value: 0
+    optimistic: true
+
+  - platform: template
+    id: error_delay
+    name: "Error Delay (ms)"
+    step: 1
+    mode: BOX
+    min_value: 0
+    max_value: 100000
+    initial_value: 500
+    optimistic: true

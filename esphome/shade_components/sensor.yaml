@@ -1,0 +1,40 @@
+# Define the rotary encoder
+sensor:
+  - platform: rotary_encoder
+    id: blinds_encoder
+    name: "Encoder"
+    # restore_mode: RESTORE_DEFAULT_ZERO
+    pin_a:
+      number: ${encoder_pin_a}
+      inverted: false
+    pin_b:
+      number: ${encoder_pin_b}
+      inverted: false
+    filters:
+      - debounce:
+          milliseconds: 50
+    on_value:
+      then:
+        - lambda: |-
+            id(last_encoder_update) = millis();
+        - if:
+            condition:
+              lambda: "return id(override_encoder);" # Check if the encoder should be ignored
+            then:
+              - sensor.rotary_encoder.set_value:
+                  id: blinds_encoder
+                  value: 0 # Reset to zero if the encoder is ignored
+              - logger.log: "Encoder is ignored, reset to 0"
+            else:
+              - logger.log:
+                  format: "Encoder state: %f"
+                  args: ["id(blinds_encoder).state"]
+              # - sensor.rotary_encoder.set_value:
+              #     id: blinds_encoder
+              #     value: !lambda |-
+              #       return abs(id(blinds_encoder).state);
+              - number.set:
+                  id: current_encoder_percent
+                  value: !lambda |-
+                    int position = (id(blinds_encoder).state - id(min_encoder_value).state) * 100 / (id(max_encoder_value).state - id(min_encoder_value).state);
+                    return position;
