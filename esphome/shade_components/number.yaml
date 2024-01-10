@@ -52,6 +52,7 @@ number:
     mode: BOX
     min_value: 0
     max_value: 100000
+    restore_value: true
     initial_value: 500
     optimistic: true
 
@@ -60,6 +61,7 @@ number:
     name: "Motor Speed"
     min_value: 0
     max_value: 100
+    restore_value: true
     initial_value: 100
     mode: SLIDER
     step: 1
@@ -67,3 +69,30 @@ number:
     # set_action:
     #   - lambda: |-
     #       id(motor_speed_pwm).set_level(x / 100.0);
+
+  - platform: template
+    id: open_duration_number
+    name: "Open Duration"
+    min_value: 0
+    max_value: 300  # Adjust max value as needed
+    restore_value: true
+    step: 1
+    mode: BOX
+    optimistic: true
+    unit_of_measurement: "seconds"
+    # set_action:
+    #   - lambda: |-
+    #       return open_duration / 1000;
+    # lambda: |-
+    #   return id(open_duration);
+  
+  - platform: template
+    id: close_duration_number
+    name: "Close Duration"
+    min_value: 0
+    max_value: 300  # Adjust max value as needed
+    restore_value: true
+    step: 1
+    mode: BOX
+    optimistic: true
+    unit_of_measurement: "seconds"

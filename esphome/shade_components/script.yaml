@@ -53,6 +53,20 @@ script:
       - globals.set:
           id: is_running
           value: "false"
+      - lambda: |-
+          if (id(movement_start_time) != 0) {  // Ensure start time was recorded
+            int duration = millis() - id(movement_start_time);
+            if (id(target_position) == 100) {  // Shade opened fully
+              auto call = id(open_duration_number).make_call();
+              call.set_value(duration / 1000);
+              call.perform();
+            } else if (id(target_position) == 0) {  // Shade closed fully
+              auto call = id(close_duration_number).make_call();
+              call.set_value(duration / 1000);
+              call.perform();
+            }
+            id(movement_start_time) = 0;  // Reset start time
+          }
   
   - id: motor_start
     then:

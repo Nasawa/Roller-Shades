@@ -15,3 +15,12 @@ globals:
     type: uint32_t
     restore_value: no
     initial_value: "0"
+  - id: movement_start_time
+    type: uint32_t
+    restore_value: no
+  - id: open_duration
+    type: int
+    initial_value: "0"
+  - id: close_duration
+    type: int
+    initial_value: "0"
