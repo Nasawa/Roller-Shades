@@ -7,7 +7,7 @@ script:
       - lambda: |-
           id(last_encoder_update) = millis();
       - output.turn_off: motor_direction_down
-      - output.turn_on: motor_enable
+      - script.execute: motor_start
       - output.turn_on: motor_direction_up
       - wait_until:
           lambda: >-
@@ -27,7 +27,7 @@ script:
       - lambda: |-
           id(last_encoder_update) = millis();
       - output.turn_off: motor_direction_up
-      - output.turn_on: motor_enable
+      - script.execute: motor_start
       - output.turn_on: motor_direction_down
       - wait_until:
           lambda: >-
@@ -43,7 +43,9 @@ script:
     then:
       - output.turn_off: motor_direction_up
       - output.turn_off: motor_direction_down
-      - output.turn_off: motor_enable
+      - output.set_level:
+          id: motor_enable
+          level: 0
       - logger.log: "Stopping motor"
       - globals.set:
           id: target_position
@@ -51,3 +53,9 @@ script:
       - globals.set:
           id: is_running
           value: "false"
+  
+  - id: motor_start
+    then:
+      - output.set_level:
+          id: motor_enable
+          level: !lambda "return (id(motor_speed).state / 100.0);"

@@ -54,3 +54,16 @@ number:
     max_value: 100000
     initial_value: 500
     optimistic: true
+
+  - platform: template
+    id: motor_speed
+    name: "Motor Speed"
+    min_value: 0
+    max_value: 100
+    initial_value: 100
+    mode: SLIDER
+    step: 1
+    optimistic: true
+    # set_action:
+    #   - lambda: |-
+    #       id(motor_speed_pwm).set_level(x / 100.0);
