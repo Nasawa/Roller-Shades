@@ -57,6 +57,8 @@ number:
     step: 1
     optimistic: true
 
+# Sensor Values
+
   - platform: template
     id: current_encoder_percent
     name: "Current Encoder Percent"
@@ -67,6 +69,10 @@ number:
     restore_value: true
     initial_value: 0
     optimistic: true
+    on_value:
+      then:
+        - lambda: |-
+            id(current_encoder_percent_sensor).publish_state(id(current_encoder_percent).state);
 
   - platform: template
     id: open_duration_number
@@ -79,6 +85,10 @@ number:
     mode: BOX
     optimistic: true
     unit_of_measurement: "seconds"
+    on_value:
+      then:
+        - lambda: |-
+            id(open_duration_number_sensor).publish_state(id(open_duration_number).state);
   
   - platform: template
     id: close_duration_number
@@ -91,3 +101,7 @@ number:
     mode: BOX
     optimistic: true
     unit_of_measurement: "seconds"
+    on_value:
+      then:
+        - lambda: |-
+            id(close_duration_number_sensor).publish_state(id(close_duration_number).state);
