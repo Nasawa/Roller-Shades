@@ -15,6 +15,7 @@ sensor:
       then:
         - lambda: |-
             id(last_encoder_update) = millis();
+            id(motor_state).publish_state(id(motor_state_ok));
         - if:
             condition:
               lambda: "return id(override_encoder);"
@@ -52,3 +53,8 @@ sensor:
     unit_of_measurement: "seconds"
     lambda: |-
       return id(close_duration_number).state;
+
+  - platform: template
+    name: "Motor State"
+    id: motor_state
+    lambda: 'return id(motor_state_ok);'

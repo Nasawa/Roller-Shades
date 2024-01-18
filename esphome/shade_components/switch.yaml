@@ -2,11 +2,15 @@ switch:
   - platform: template
     name: "Override Encoder"
     id: override_encoder_switch
+    lambda: |-
+      return id(override_encoder);
     turn_on_action:
       - globals.set:
           id: override_encoder
           value: "true"
       - logger.log: "Encoder will be ignored"
+      - lambda: |- 
+          id(motor_state).publish_state(id(motor_state_calibrating));
     turn_off_action:
       - globals.set:
           id: override_encoder

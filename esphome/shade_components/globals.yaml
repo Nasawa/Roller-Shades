@@ -24,3 +24,18 @@ globals:
   - id: close_duration
     type: int
     initial_value: "0"
+
+#Pseudo-Enums
+
+  - id: motor_state_error
+    type: std::string
+    restore_value: no
+    initial_value: '"Error"'
+  - id: motor_state_ok
+    type: std::string
+    restore_value: no
+    initial_value: '"OK"'
+  - id: motor_state_calibrating
+    type: std::string
+    restore_value: no
+    initial_value: '"Calibrating"'
