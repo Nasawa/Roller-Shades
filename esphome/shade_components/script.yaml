@@ -1,6 +1,9 @@
 script:
   - id: motor_up
     then:
+      - cover.template.publish:
+          id: shade
+          current_operation: OPEN
       - globals.set:
           id: is_running
           value: "true"
@@ -21,6 +24,9 @@ script:
 
   - id: motor_down
     then:
+      - cover.template.publish:
+          id: shade
+          current_operation: CLOSING
       - globals.set:
           id: is_running
           value: "true"
@@ -41,6 +47,9 @@ script:
 
   - id: motor_stop
     then:
+      - cover.template.publish:
+          id: shade
+          state: !lambda return "id(current_encoder_percent) > 10 ? COVER_OPEN : COVER_CLOSED;"
       - output.turn_off: motor_direction_up
       - output.turn_off: motor_direction_down
       - output.set_level:
@@ -73,3 +82,38 @@ script:
       - output.set_level:
           id: motor_enable
           level: !lambda "return (id(motor_speed).state / 100.0);"
+
+  - id: motor_toggle
+    then:
+      - if:
+          condition:
+            lambda: 'return id(is_running);'
+          then:
+            - script.execute: motor_stop
+          else:
+            - if:
+                condition:
+                  lambda: 'return id(current_encoder_percent).state < 10;'
+                then:
+                  - script.execute: motor_up
+                else:
+                  - script.execute: motor_down
+
+  - id: countdown
+    then:
+      - globals.set:
+          id: data_out
+          value: 3
+      - delay: 1s
+      - globals.set:
+          id: data_out
+          value: 2
+      - delay: 1s
+      - globals.set:
+          id: data_out
+          value: 1
+      - delay: 1s
+      - globals.set:
+          id: data_out
+          value: 0
+      - script.execute: motor_toggle

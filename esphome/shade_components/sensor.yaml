@@ -2,15 +2,12 @@ sensor:
   - platform: rotary_encoder
     id: blinds_encoder
     name: "Encoder"
-    pin_a:
-      number: ${encoder_pin_a}
-      inverted: false
-    pin_b:
-      number: ${encoder_pin_b}
-      inverted: false
+    pin_a: D7
+    pin_b: D8
+    publish_initial_value: true
     filters:
       - debounce:
-          milliseconds: 50
+          milliseconds: 10
     on_value:
       then:
         - lambda: |-

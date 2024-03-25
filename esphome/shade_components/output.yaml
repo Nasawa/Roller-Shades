@@ -1,13 +1,13 @@
 output:
   - platform: gpio
     id: motor_direction_up
-    pin: D4
+    pin: D5
 
   - platform: gpio
     id: motor_direction_down
-    pin: D5
+    pin: D6
 
   - platform: esp8266_pwm
     id: motor_enable
-    pin: D8
+    pin: D0
     frequency: 1000 Hz

@@ -1,5 +1,5 @@
 interval:
-  - interval: 1s
+  - interval: 500ms
     then:
       - lambda: |-
           if (id(is_running) && (millis() - id(last_encoder_update)) > id(error_delay).state) {
@@ -10,4 +10,9 @@ interval:
               id(motor_state).publish_state(id(motor_state_calibrating));
           } else {
               id(motor_state).publish_state(id(motor_state_ok));
+          }
+
+          if (id(is_running) && (millis() - id(last_encoder_update)) > id(screen_off_delay).state) {
+              ESP_LOGD("custom", "Turning off OLED...");
+              id(is_display_on).publish_state(false);
           }

@@ -1,11 +1,16 @@
 substitutions:
-  encoder_pin_a: "D1"
-  encoder_pin_b: "D2"
+  name: template-shade
+  friendly_name: Template Shade
   
 esphome:
-  name: template-shade
+  name: ${name}
+  friendly_name: ${friendly_name}
   platform: ESP8266
   board: nodemcuv2
+  name_add_mac_suffix: false
+  project:
+    name: esphome.web
+    version: '1.0'
 
 wifi:
   ssid: !secret wifi_ssid
@@ -33,8 +38,12 @@ api:
 ota:
   password: !secret template_shade_ota_password
 
+<<: !include ./shade_components/binary_sensor.yaml
 <<: !include ./shade_components/cover.yaml
+<<: !include ./shade_components/display.yaml
+<<: !include ./shade_components/font.yaml
 <<: !include ./shade_components/globals.yaml
+<<: !include ./shade_components/i2c.yaml
 <<: !include ./shade_components/interval.yaml
 <<: !include ./shade_components/number.yaml
 <<: !include ./shade_components/output.yaml

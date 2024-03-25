@@ -1,6 +1,6 @@
 cover:
   - platform: template
-    name: "Shade"
+    name: "${friendly_name} Shade"
     id: shade
     device_class: shade
     optimistic: true # Set to false to update position based on actual feedback

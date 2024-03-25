@@ -47,6 +47,17 @@ number:
     optimistic: true
 
   - platform: template
+    id: screen_off_delay
+    name: "Screen Off Delay (ms)"
+    step: 1
+    mode: BOX
+    min_value: 0
+    max_value: 100000
+    restore_value: true
+    initial_value: 10000
+    optimistic: true
+
+  - platform: template
     id: motor_speed
     name: "Motor Speed"
     min_value: 0

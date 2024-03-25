@@ -1,0 +1,4 @@
+font:
+  - file: "fonts/RobotoMono-Regular.ttf"
+    id: roboto_mono
+    size: 12  # This must be a fixed integer

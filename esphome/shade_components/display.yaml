@@ -1,0 +1,45 @@
+display:
+  - platform: ssd1306_i2c
+    model: "SSD1306 128x32"
+    update_interval: 500ms
+    contrast: 0%
+    id: my_display
+    lambda: |-
+			if(!id(is_display_on).state) {
+				return;
+			}
+
+			char text[5];
+			
+			if(id(data_out).state > 0)
+			{
+				sprintf(text, "%d%%", int(id(data_out).state));
+			}
+			else if(id(is_percent).state) 
+			{
+				// Calculate the width of the progress bar based on the current percentage
+				int progress_width = int((id(current_encoder_percent).state / 100.0) * 128);
+				// Draw the progress bar
+				it.filled_rectangle(0, 0, progress_width, 32);
+
+				// Prepare the percentage text
+				sprintf(text, "%d%%", int(id(current_encoder_percent).state));
+			}
+			else 
+			{
+				sprintf(text, "%d%%", int(id(blinds_encoder).state));
+			}
+
+			// Estimate character width and center the text
+			// Adjust the multiplier based on the average character width of your font
+			int avg_char_width = 6; // This is an estimated average width; adjust as necessary
+			int text_length = strlen(text);
+			int estimated_text_width = avg_char_width * text_length;
+
+			// Since our display is 128 pixels wide, we calculate the start position
+			int start_x = (128 - estimated_text_width) / 2;
+			int start_y = (32 - 16) / 2; // Assuming the text height is roughly 12 pixels
+
+			// Draw the text in the middle of the display
+			it.filled_rectangle(start_x - 2, start_y, estimated_text_width + 8, 16, COLOR_OFF);
+			it.print(start_x, start_y, id(roboto_mono), text);
